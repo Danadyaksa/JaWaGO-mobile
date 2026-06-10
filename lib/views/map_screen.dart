@@ -185,7 +185,7 @@ class _MapScreenState extends State<MapScreen> {
   Future<void> _handleCatch(Map spawn) async {
     if (_currentPosition == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('GPS belum ke-detect!')),
+        const SnackBar(content: Text('Sinyal GPS belum terdeteksi.')),
       );
       return;
     }
@@ -209,13 +209,13 @@ class _MapScreenState extends State<MapScreen> {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
                 backgroundColor: Colors.redAccent,
-                content: Text('🔥 CHEAT MODE ACTIVE! Wayang berhasil ditangkap dari jauh!'),
+                content: Text('Mode Admin Aktif: Wayang berhasil ditangkap dari luar jangkauan.'),
               ),
             );
           } else {
             final xpReward = (spawn['pokedex']?['xp_reward'] ?? 100) as int;
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Gotcha! ${spawn['name']} tertangkap. +$xpReward XP')),
+              SnackBar(content: Text('${spawn['name']} berhasil ditangkap. +$xpReward XP')),
             );
           }
 
@@ -246,7 +246,7 @@ class _MapScreenState extends State<MapScreen> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Gagal menyimpan wayang: $e')),
+          SnackBar(content: Text('Gagal menangkap wayang: $e')),
         );
       }
     }
@@ -255,7 +255,7 @@ class _MapScreenState extends State<MapScreen> {
   Future<void> _handleCollectLandmark(Map lm) async {
     if (_currentPosition == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('GPS belum ke-detect!')),
+        const SnackBar(content: Text('Sinyal GPS belum terdeteksi.')),
       );
       return;
     }
@@ -279,13 +279,13 @@ class _MapScreenState extends State<MapScreen> {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
                 backgroundColor: Colors.redAccent,
-                content: Text('🔥 CHEAT MODE ACTIVE! Check-in landmark dari jauh berhasil!'),
+                content: Text('Mode Admin Aktif: Check-in landmark dari luar jangkauan berhasil.'),
               ),
             );
           } else {
             final xpReward = (lm['xp_reward'] ?? 500) as int;
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Check-in Sukses! +$xpReward XP')),
+              SnackBar(content: Text('Check-in berhasil. +$xpReward XP')),
             );
           }
 
@@ -311,7 +311,7 @@ class _MapScreenState extends State<MapScreen> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Gagal check-in atau udah pernah.')),
+          const SnackBar(content: Text('Gagal melakukan check-in atau lokasi sudah pernah dikunjungi.')),
         );
       }
     }
@@ -331,7 +331,7 @@ class _MapScreenState extends State<MapScreen> {
       });
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Gagal menyimpan nama: $e')),
+        SnackBar(content: Text('Gagal memperbarui nama: $e')),
       );
     }
   }

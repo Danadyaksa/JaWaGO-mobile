@@ -99,7 +99,7 @@ class MapScreenController {
   /// or returns a level integer if the catch caused a Level Up, e.g. {'success': true, 'levelUp': 2, 'message': '...'}
   Future<Map<String, dynamic>> handleCatch(Map spawn, LatLng currentPosition) async {
     final user = currentUser;
-    if (user == null) return {'success': false, 'message': 'User session tidak ditemukan.'};
+    if (user == null) return {'success': false, 'message': 'Sesi masuk tidak ditemukan. Silakan masuk kembali.'};
 
     final double lat = (spawn['lat'] as num).toDouble();
     final double lng = (spawn['lng'] as num).toDouble();
@@ -111,7 +111,7 @@ class MapScreenController {
     if (!isAdmin && dist > maxRadius) {
       return {
         'success': false,
-        'message': '❌ KEJAUHAN BANG!\n\nJarak: ${dist.floor()}m\nSyarat: < ${maxRadius.floor()}m\nMaju lagi dikit lah!'
+        'message': 'Jarak terlalu jauh (${dist.floor()}m). Silakan mendekat hingga kurang dari ${maxRadius.floor()}m.'
       };
     }
 
@@ -134,8 +134,8 @@ class MapScreenController {
 
     final String name = spawn['name'] ?? 'Wayang';
     final String successMessage = isAdmin
-        ? '🔥 CHEAT MODE ACTIVE!\nSukses nangkep $name dari jarak ${dist.floor()}m!'
-        : '✅ MANTAP!\n$name ketangkep! Jarak aman (${dist.floor()}m).';
+        ? 'Mode Admin Aktif: Berhasil menangkap $name dari jarak ${dist.floor()}m.'
+        : 'Berhasil menangkap $name (jarak: ${dist.floor()}m).';
 
     return {
       'success': true,
@@ -147,7 +147,7 @@ class MapScreenController {
   /// Handles checking in a landmark.
   Future<Map<String, dynamic>> handleCollectLandmark(Map landmark, LatLng currentPosition) async {
     final user = currentUser;
-    if (user == null) return {'success': false, 'message': 'User session tidak ditemukan.'};
+    if (user == null) return {'success': false, 'message': 'Sesi masuk tidak ditemukan. Silakan masuk kembali.'};
 
     final double lat = (landmark['lat'] as num).toDouble();
     final double lng = (landmark['lng'] as num).toDouble();
@@ -159,7 +159,7 @@ class MapScreenController {
     if (!isAdmin && dist > maxRadius) {
       return {
         'success': false,
-        'message': '❌ KEJAUHAN BANG!\n\nJarak: ${dist.floor()}m\nSyarat: < ${maxRadius.floor()}m\nMaju lagi dikit lah!'
+        'message': 'Jarak terlalu jauh (${dist.floor()}m). Silakan mendekat hingga kurang dari ${maxRadius.floor()}m.'
       };
     }
 
@@ -178,8 +178,8 @@ class MapScreenController {
 
     final String name = landmark['name'] ?? 'Landmark';
     final String successMessage = isAdmin
-        ? '🔥 CHEAT MODE ACTIVE!\nSukses check-in di $name dari jarak ${dist.floor()}m!'
-        : '✅ BERHASIL CHECK-IN!\nKamu telah mengunjungi $name. Jarak aman (${dist.floor()}m).';
+        ? 'Mode Admin Aktif: Berhasil check-in di $name dari jarak ${dist.floor()}m.'
+        : 'Berhasil melakukan check-in di $name (jarak: ${dist.floor()}m).';
 
     return {
       'success': true,
