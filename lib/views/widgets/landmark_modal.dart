@@ -31,9 +31,8 @@ class LandmarkModal extends StatelessWidget {
         : int.tryParse(landmark['xp_reward']?.toString() ?? '') ?? 500;
 
     // Active Gradient for Landmarks
-    const activeGradient = [Color(0xFF2563EB), Color(0xFF4338CA)]; // from-blue-600 to-indigo-700
+    const activeGradient = [Color(0xFF2563EB), Color(0xFF4338CA)];
 
-    // Calc distance & ETA
     String distanceInfo = "???";
     String etaInfo = "???";
     if (userLoc != null && !isVisited) {
@@ -54,7 +53,6 @@ class LandmarkModal extends StatelessWidget {
       ][dt.month]} ${dt.year}";
     }
 
-    // Extract local asset name from imageUrl if applicable, e.g. "/landmarks/tugu.jpg" -> "tugu.jpg"
     String assetName = '';
     if (imageUrl.contains('/landmarks/')) {
       assetName = imageUrl.split('/landmarks/').last;
@@ -85,7 +83,6 @@ class LandmarkModal extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // Top Banner Image & Gradient
               Container(
                 height: 190,
                 decoration: const BoxDecoration(
@@ -97,7 +94,6 @@ class LandmarkModal extends StatelessWidget {
                 ),
                 child: Stack(
                   children: [
-                    // Background Image (Grayscale if unvisited)
                     Positioned.fill(
                       child: ColorFiltered(
                         colorFilter: !isVisited
@@ -123,7 +119,6 @@ class LandmarkModal extends StatelessWidget {
                       ),
                     ),
 
-                    // Inner Shadow overlay
                     Positioned.fill(
                       child: Container(
                         decoration: BoxDecoration(
@@ -140,7 +135,6 @@ class LandmarkModal extends StatelessWidget {
                       ),
                     ),
 
-                    // Close Button
                     Positioned(
                       top: 12,
                       right: 12,
@@ -162,7 +156,6 @@ class LandmarkModal extends StatelessWidget {
                       ),
                     ),
 
-                    // Category Badge
                     Positioned(
                       top: 12,
                       left: 12,
@@ -185,7 +178,6 @@ class LandmarkModal extends StatelessWidget {
                       ),
                     ),
 
-                    // Visited tag or distance/ETA overlays
                     Positioned(
                       bottom: 12,
                       left: 12,
@@ -269,7 +261,6 @@ class LandmarkModal extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    // Name & Tag Row
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -344,13 +335,12 @@ class LandmarkModal extends StatelessWidget {
                     const Divider(color: Color(0xFFF1F5F9)),
                     const SizedBox(height: 8),
 
-                    // Description text
                     Container(
                       padding: const EdgeInsets.only(left: 10, top: 4, bottom: 4),
                       decoration: const BoxDecoration(
                         border: Border(
                           left: BorderSide(
-                            color: Color(0xFF93C5FD), // blue-300
+                            color: Color(0xFF93C5FD),
                             width: 4.0,
                           ),
                         ),
@@ -372,9 +362,9 @@ class LandmarkModal extends StatelessWidget {
                       height: 130,
                       padding: const EdgeInsets.all(12.0),
                       decoration: BoxDecoration(
-                        color: const Color(0xFFEFF6FF), // blue-50
+                        color: const Color(0xFFEFF6FF),
                         borderRadius: BorderRadius.circular(12),
-                        border: Border.all(color: const Color(0xFFDBEAFE)), // blue-100
+                        border: Border.all(color: const Color(0xFFDBEAFE)),
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,

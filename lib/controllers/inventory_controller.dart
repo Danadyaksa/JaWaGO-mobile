@@ -7,22 +7,19 @@ class InventoryController {
   List<dynamic> myLandmarks = [];
   bool loading = true;
 
-  // Sorting parameters
-  String wayangSortBy = 'date'; // 'date', 'rarity', 'name'
-  String wayangSortOrder = 'desc'; // 'asc', 'desc'
-  String landmarkSortOrder = 'desc'; // 'asc', 'desc'
+  String wayangSortBy = 'date';
+  String wayangSortOrder = 'desc';
+  String landmarkSortOrder = 'desc';
 
   Future<void> fetchStorage() async {
     final user = _client.auth.currentUser;
     if (user == null) return;
 
-    // 1. Fetch Wayangs caught
     final wayangData = await _client
         .from('user_storage')
         .select('id, caught_at, pokedex(id, name, type, image_url, description, education, rarity, xp_reward)')
         .eq('user_id', user.id);
 
-    // 2. Fetch Landmarks visited
     final lmData = await _client
         .from('user_landmarks')
         .select('id, visited_at, landmarks(id, name, image_url, description, philosophy, lat, lng, xp_reward)')

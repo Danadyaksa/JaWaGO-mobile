@@ -5,7 +5,6 @@ class LocationService {
     bool serviceEnabled;
     LocationPermission permission;
 
-    // Test if location services are enabled.
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
       return null;
@@ -33,7 +32,7 @@ class LocationService {
   Stream<Position> getLocationStream() {
     const LocationSettings locationSettings = LocationSettings(
       accuracy: LocationAccuracy.high,
-      distanceFilter: 3, // Update location every 3 meters
+      distanceFilter: 3,
     );
     return Geolocator.getPositionStream(locationSettings: locationSettings);
   }

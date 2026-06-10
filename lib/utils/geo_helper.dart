@@ -1,9 +1,8 @@
 import 'dart:math';
 
 class GeoHelper {
-  // Geolocator has distanceBetween, but to keep rules identical, here is the Haversine formula
   static double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
-    const double r = 6371e3; // meters
+    const double r = 6371e3;
     double phi1 = lat1 * pi / 180;
     double phi2 = lat2 * pi / 180;
     double deltaPhi = (lat2 - lat1) * pi / 180;
@@ -13,7 +12,7 @@ class GeoHelper {
         cos(phi1) * cos(phi2) * sin(deltaLambda / 2) * sin(deltaLambda / 2);
     double c = 2 * atan2(sqrt(a), sqrt(1 - a));
 
-    return r * c; // returns meters
+    return r * c;
   }
 
   static String calculateETA(double distanceInMeters) {

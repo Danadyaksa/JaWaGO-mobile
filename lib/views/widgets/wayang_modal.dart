@@ -3,7 +3,7 @@ import 'package:lucide_icons/lucide_icons.dart';
 import '../../utils/geo_helper.dart';
 
 class WayangModal extends StatelessWidget {
-  final Map spawn; // or spawn model
+  final Map spawn;
   final List<double>? userLoc;
   final bool isCaught;
   final VoidCallback onClose;
@@ -55,7 +55,6 @@ class WayangModal extends StatelessWidget {
     };
     final rarityBg = rarityColors[rarity] ?? const Color(0xFF64748B);
 
-    // Calc distance & ETA
     String distanceInfo = "???";
     String etaInfo = "???";
     if (userLoc != null && !isCaught) {
@@ -101,7 +100,6 @@ class WayangModal extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // Top Banner Gradient
               Container(
                 height: 190,
                 decoration: BoxDecoration(
@@ -113,7 +111,6 @@ class WayangModal extends StatelessWidget {
                 ),
                 child: Stack(
                   children: [
-                    // Texture overlay
                     Positioned.fill(
                       child: Opacity(
                         opacity: 0.1,
@@ -125,7 +122,6 @@ class WayangModal extends StatelessWidget {
                       ),
                     ),
 
-                    // Close Button
                     Positioned(
                       top: 12,
                       right: 12,
@@ -178,7 +174,6 @@ class WayangModal extends StatelessWidget {
                       ),
                     ),
 
-                    // Image (Silhouette if wild/uncaught)
                     Center(
                       child: Container(
                         width: 140,
@@ -187,11 +182,9 @@ class WayangModal extends StatelessWidget {
                         child: Image.asset(
                           'assets/wayang/${name}.png',
                           fit: BoxFit.contain,
-                          // Silhouette effect for uncaught
                           color: !isCaught ? Colors.black.withOpacity(0.75) : null,
                           colorBlendMode: !isCaught ? BlendMode.srcIn : null,
                           errorBuilder: (context, error, stackTrace) {
-                            // Fallback to loaded imageUrl
                             return Image.network(
                               imageUrl,
                               fit: BoxFit.contain,
@@ -208,7 +201,6 @@ class WayangModal extends StatelessWidget {
                       ),
                     ),
 
-                    // Bottom info overlays (caught date or distance)
                     Positioned(
                       bottom: 12,
                       left: 12,
@@ -292,7 +284,6 @@ class WayangModal extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    // Name & Type row
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -373,7 +364,6 @@ class WayangModal extends StatelessWidget {
                     const Divider(color: Color(0xFFF1F5F9)),
                     const SizedBox(height: 8),
 
-                    // Description text
                     Container(
                       padding: const EdgeInsets.only(left: 10, top: 4, bottom: 4),
                       decoration: const BoxDecoration(
@@ -401,9 +391,9 @@ class WayangModal extends StatelessWidget {
                       height: 130,
                       padding: const EdgeInsets.all(12.0),
                       decoration: BoxDecoration(
-                        color: const Color(0xFFFFFBEB), // amber-50
+                        color: const Color(0xFFFFFBEB),
                         borderRadius: BorderRadius.circular(12),
-                        border: Border.all(color: const Color(0xFFFEF3C7)), // amber-100
+                        border: Border.all(color: const Color(0xFFFEF3C7)),
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,

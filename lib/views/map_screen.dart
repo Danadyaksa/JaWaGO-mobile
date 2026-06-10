@@ -57,8 +57,8 @@ class _MapScreenState extends State<MapScreen> {
   // Search & Filter
   final TextEditingController _searchController = TextEditingController();
   String _searchQuery = "";
-  String _searchCategory = "all"; // 'all', 'wayang', 'landmark'
-  String _searchElement = "all"; // 'all', 'Angin', 'Api', 'Bumi', 'Cahaya', 'Petir', 'Bulan', 'Spirit'
+  String _searchCategory = "all";
+  String _searchElement = "all";
   bool _isSearchActive = false;
 
   // Overlays
@@ -93,7 +93,6 @@ class _MapScreenState extends State<MapScreen> {
   Future<void> _initApp() async {
     final user = _controller.currentUser;
     if (user == null) {
-      // Re-route to login if no active user session
       WidgetsBinding.instance.addPostFrameCallback((_) {
         Navigator.of(context).pushReplacementNamed('/login');
       });
@@ -104,10 +103,8 @@ class _MapScreenState extends State<MapScreen> {
     await _fetchLandmarks();
     await _fetchSpawns();
 
-    // Start listening to user location
     _startLocationTracking();
 
-    // Timer to pull spawns every 10 seconds (Matches NextJS)
     _spawnsTimer = Timer.periodic(const Duration(seconds: 10), (_) {
       _fetchSpawns();
     });
@@ -162,7 +159,6 @@ class _MapScreenState extends State<MapScreen> {
         setState(() {
           _currentPosition = pos;
         });
-        // Recalculate route if target exists
         if (_routeTarget != null) {
           _fetchRoute(LatLng(pos.latitude, pos.longitude), _routeTarget!);
         }
@@ -170,7 +166,6 @@ class _MapScreenState extends State<MapScreen> {
     });
   }
 
-  // Fetch Route from OSRM delegated to controller
   Future<void> _fetchRoute(LatLng start, LatLng target) async {
     try {
       await _controller.fetchRoute(start, target);
@@ -231,7 +226,6 @@ class _MapScreenState extends State<MapScreen> {
             _controller.clearRoute();
           });
 
-          // trigger server API to spawn another wayang if needed
           try {
             await http.get(Uri.parse('https://romzwsitdrsfbcbflhqc.supabase.co/functions/v1/spawn'));
           } catch (_) {}
@@ -363,7 +357,6 @@ class _MapScreenState extends State<MapScreen> {
     }
   }
 
-  // Filtered Search Results
   List<dynamic> get _searchResults {
     if (_searchQuery.isEmpty && _searchCategory == 'all' && _searchElement == 'all') {
       return [];
@@ -399,7 +392,6 @@ class _MapScreenState extends State<MapScreen> {
     return results.take(10).toList();
   }
 
-  // Nearest 5 Radar items
   List<dynamic> get _nearestRadarSpawns {
     if (_currentPosition == null || _spawns.isEmpty) return [];
 
@@ -423,11 +415,10 @@ class _MapScreenState extends State<MapScreen> {
     return Scaffold(
       body: Stack(
         children: [
-          // 1. Interactive Map
           FlutterMap(
             mapController: _mapController,
             options: MapOptions(
-              initialCenter: const LatLng(-7.7829, 110.3670), // Center of Jogja
+              initialCenter: const LatLng(-7.7829, 110.3670),
               initialZoom: 14.0,
             ),
             children: [
@@ -436,13 +427,12 @@ class _MapScreenState extends State<MapScreen> {
                 userAgentPackageName: 'com.example.jawago_mobile',
               ),
 
-              // Player Range Ring
               if (_currentPosition != null)
                 CircleLayer(
                   circles: [
                     CircleMarker(
                       point: LatLng(_currentPosition!.latitude, _currentPosition!.longitude),
-                      radius: 50, // 50 meters
+                      radius: 50,
                       useRadiusInMeter: true,
                       color: const Color(0xFF22C55E).withOpacity(0.1),
                       borderColor: const Color(0xFF22C55E),
@@ -451,22 +441,19 @@ class _MapScreenState extends State<MapScreen> {
                   ],
                 ),
 
-              // Routing Polylines
               if (_routeCoordinates.isNotEmpty)
                 PolylineLayer(
                   polylines: [
                     Polyline(
                       points: _routeCoordinates,
-                      color: const Color(0xFF3B82F6), // blue-500
+                      color: const Color(0xFF3B82F6),
                       strokeWidth: 6.0,
                     ),
                   ],
                 ),
 
-              // Markers
               MarkerLayer(
                 markers: [
-                  // User Marker
                   if (_currentPosition != null)
                     Marker(
                       point: LatLng(_currentPosition!.latitude, _currentPosition!.longitude),
@@ -487,7 +474,6 @@ class _MapScreenState extends State<MapScreen> {
                       ),
                     ),
 
-                  // Wayang Spawns Markers
                   ..._spawns.map((s) {
                     final lat = (s['lat'] as num).toDouble();
                     final lng = (s['lng'] as num).toDouble();
@@ -516,7 +502,6 @@ class _MapScreenState extends State<MapScreen> {
                     );
                   }),
 
-                  // Landmarks Markers
                   ..._landmarks.map((l) {
                     final lat = (l['lat'] as num).toDouble();
                     final lng = (l['lng'] as num).toDouble();
@@ -540,7 +525,7 @@ class _MapScreenState extends State<MapScreen> {
                                 width: 32,
                                 height: 32,
                                 decoration: BoxDecoration(
-                                  color: const Color(0xFF10B981), // emerald-500
+                                  color: const Color(0xFF10B981),
                                   shape: BoxShape.circle,
                                   border: Border.all(color: Colors.white, width: 3),
                                   boxShadow: [
@@ -578,7 +563,6 @@ class _MapScreenState extends State<MapScreen> {
             ],
           ),
 
-          // 2. Floating Search Bar Overlay
           if (!_showMenu)
             Positioned(
               top: 48,
@@ -637,7 +621,6 @@ class _MapScreenState extends State<MapScreen> {
                         Container(width: 1, height: 20, color: const Color(0xFFE2E8F0)),
                         const SizedBox(width: 4),
 
-                        // Category Dropdown
                         DropdownButtonHideUnderline(
                           child: DropdownButton<String>(
                             value: _searchCategory,
@@ -724,7 +707,6 @@ class _MapScreenState extends State<MapScreen> {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          // Header Results Panel
                           Container(
                             color: const Color(0xFFF8FAFC),
                             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -755,7 +737,6 @@ class _MapScreenState extends State<MapScreen> {
                           ),
                           const Divider(height: 1, color: Color(0xFFE2E8F0)),
 
-                          // Results Items List
                           Flexible(
                             child: _searchResults.isEmpty
                                 ? const Padding(
@@ -893,7 +874,6 @@ class _MapScreenState extends State<MapScreen> {
               ),
             ),
 
-          // 3. Navigation routing HUD display
           if (_routeTarget != null && _routes.isNotEmpty)
             Positioned(
               top: 110,
@@ -916,9 +896,8 @@ class _MapScreenState extends State<MapScreen> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    // Header navigation details
                     Container(
-                      color: const Color(0xFF2563EB), // blue-600
+                      color: const Color(0xFF2563EB),
                       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -968,7 +947,6 @@ class _MapScreenState extends State<MapScreen> {
                       ),
                     ),
 
-                    // Navigation paths list
                     Container(
                       color: const Color(0xFFF8FAFC),
                       child: ListView.builder(
@@ -1062,7 +1040,6 @@ class _MapScreenState extends State<MapScreen> {
               ),
             ),
 
-          // 4. BOTTOM TRAINER HUD
           if (!_showMenu)
             Positioned(
               bottom: 0,
@@ -1085,7 +1062,6 @@ class _MapScreenState extends State<MapScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    // Trainer Profile Bubble (Left)
                     GestureDetector(
                       onTap: () => setState(() => _showProfile = true),
                       child: Stack(
@@ -1163,7 +1139,6 @@ class _MapScreenState extends State<MapScreen> {
                       ),
                     ),
 
-                    // Menu Trigger Button (Center)
                     GestureDetector(
                       onTap: () => setState(() => _showMenu = !_showMenu),
                       child: Container(
@@ -1180,7 +1155,7 @@ class _MapScreenState extends State<MapScreen> {
                             )
                           ],
                           gradient: const LinearGradient(
-                            colors: [Color(0xFFF59E0B), Color(0xFFEA580C)], // from-amber-500 to-orange-600
+                            colors: [Color(0xFFF59E0B), Color(0xFFEA580C)],
                             begin: Alignment.topCenter,
                             end: Alignment.bottomCenter,
                           ),
@@ -1196,7 +1171,6 @@ class _MapScreenState extends State<MapScreen> {
                       ),
                     ),
 
-                    // Radar sheet trigger (Right)
                     GestureDetector(
                       onTap: _openRadarSheet,
                       child: Container(
@@ -1215,7 +1189,7 @@ class _MapScreenState extends State<MapScreen> {
                         ),
                         child: const Icon(
                           LucideIcons.radio,
-                          color: Color(0xFF2563EB), // blue-600
+                          color: Color(0xFF2563EB),
                           size: 24,
                         ),
                       ),
@@ -1225,18 +1199,16 @@ class _MapScreenState extends State<MapScreen> {
               ),
             ),
 
-          // 5. FULL-SCREEN GLOW MENU OVERLAY (Center button clicked)
           if (_showMenu)
             GestureDetector(
               onTap: () => setState(() => _showMenu = false),
               child: Container(
-                color: const Color(0xFF0F172A).withOpacity(0.92), // slate-900/90
+                color: const Color(0xFF0F172A).withOpacity(0.92),
                 width: size.width,
                 height: size.height,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    // Grid Menu Options
                     GridView.count(
                       shrinkWrap: true,
                       crossAxisCount: 2,
@@ -1244,7 +1216,6 @@ class _MapScreenState extends State<MapScreen> {
                       crossAxisSpacing: 48,
                       padding: const EdgeInsets.symmetric(horizontal: 56),
                       children: [
-                        // Menu Koleksi
                         _buildMenuOption(
                           label: 'KOLEKSI',
                           icon: LucideIcons.backpack,
@@ -1254,11 +1225,10 @@ class _MapScreenState extends State<MapScreen> {
                             Navigator.of(context).push(
                               MaterialPageRoute(builder: (context) => const InventoryScreen()),
                             ).then((_) {
-                              _fetchProfile(); // reload profile stats on return
+                              _fetchProfile();
                             });
                           },
                         ),
-                        // Menu Profil
                         _buildMenuOption(
                           label: 'PROFIL',
                           icon: LucideIcons.user,
@@ -1270,7 +1240,6 @@ class _MapScreenState extends State<MapScreen> {
                             });
                           },
                         ),
-                        // Menu Tentang
                         _buildMenuOption(
                           label: 'TENTANG',
                           icon: LucideIcons.info,
@@ -1282,7 +1251,6 @@ class _MapScreenState extends State<MapScreen> {
                             });
                           },
                         ),
-                        // Menu Tips
                         _buildMenuOption(
                           label: 'TIPS',
                           icon: LucideIcons.lightbulb,
@@ -1298,7 +1266,6 @@ class _MapScreenState extends State<MapScreen> {
                     ),
                     const SizedBox(height: 48),
 
-                    // Close menu button
                     GestureDetector(
                       onTap: () => setState(() => _showMenu = false),
                       child: Container(
@@ -1306,7 +1273,7 @@ class _MapScreenState extends State<MapScreen> {
                         height: 60,
                         margin: const EdgeInsets.only(bottom: 28),
                         decoration: BoxDecoration(
-                          color: const Color(0xFF475569), // slate-600
+                          color: const Color(0xFF475569),
                           shape: BoxShape.circle,
                           border: Border.all(color: Colors.white, width: 4),
                         ),
@@ -1318,19 +1285,15 @@ class _MapScreenState extends State<MapScreen> {
               ),
             ),
 
-          // 6. PROFIL MODAL OVERLAY
           if (_showProfile && _profile != null)
             _buildProfileDialog(),
 
-          // 7. TENTANG MODAL OVERLAY
           if (_showAbout)
             _buildAboutDialog(),
 
-          // 8. TIPS MODAL OVERLAY
           if (_showTips)
             _buildTipsDialog(),
 
-          // 9. WILD WAYANG MODAL OVERLAY
           if (_selectedPokemon != null)
             Container(
               color: Colors.black.withOpacity(0.6),
@@ -1357,7 +1320,6 @@ class _MapScreenState extends State<MapScreen> {
               ),
             ),
 
-          // 10. LANDMARK MODAL OVERLAY
           if (_selectedLandmark != null)
             Container(
               color: Colors.black.withOpacity(0.6),
@@ -1384,7 +1346,6 @@ class _MapScreenState extends State<MapScreen> {
               ),
             ),
 
-          // 11. LEVEL UP CELEBRATION OVERLAY
           if (_levelUpModal != null)
             _buildLevelUpDialog(),
         ],
@@ -1392,7 +1353,6 @@ class _MapScreenState extends State<MapScreen> {
     );
   }
 
-  // Radar Bottom Sheet modal
   void _openRadarSheet() {
     showModalBottomSheet(
       context: context,
@@ -1630,7 +1590,6 @@ class _MapScreenState extends State<MapScreen> {
     );
   }
 
-  // Helper Widget for Overlay Grid Menu options
   Widget _buildMenuOption({
     required String label,
     required IconData icon,
@@ -1678,7 +1637,6 @@ class _MapScreenState extends State<MapScreen> {
     );
   }
 
-  // 6. Profile Dialog UI
   Widget _buildProfileDialog() {
     double progress = (_profile!.currentXp / _profile!.nextLevelXp).clamp(0.0, 1.0);
 
@@ -1705,7 +1663,6 @@ class _MapScreenState extends State<MapScreen> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            // Close Button
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
@@ -1716,7 +1673,6 @@ class _MapScreenState extends State<MapScreen> {
               ],
             ),
 
-            // Profile Avatar
             Container(
               width: 80,
               height: 80,
@@ -1729,7 +1685,6 @@ class _MapScreenState extends State<MapScreen> {
             ),
             const SizedBox(height: 12),
 
-            // Editable Display Name
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -1800,7 +1755,6 @@ class _MapScreenState extends State<MapScreen> {
             ),
             const SizedBox(height: 4),
 
-            // Role Badge
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
               decoration: BoxDecoration(
@@ -1818,7 +1772,6 @@ class _MapScreenState extends State<MapScreen> {
             ),
             const SizedBox(height: 16),
 
-            // Level Stats
             const Text(
               'LEVEL SAAT INI',
               style: TextStyle(
@@ -1864,7 +1817,6 @@ class _MapScreenState extends State<MapScreen> {
             ),
             const SizedBox(height: 20),
 
-            // Counts Grid
             Row(
               children: [
                 Expanded(
@@ -1920,7 +1872,6 @@ class _MapScreenState extends State<MapScreen> {
             ),
             const SizedBox(height: 20),
 
-            // Logout Button
             OutlinedButton.icon(
               onPressed: _handleLogout,
               icon: const Icon(LucideIcons.logOut, size: 14, color: Colors.redAccent),
@@ -1940,7 +1891,6 @@ class _MapScreenState extends State<MapScreen> {
     );
   }
 
-  // 7. About Dialog UI
   Widget _buildAboutDialog() {
     return Container(
       color: Colors.black.withOpacity(0.8),
@@ -1989,7 +1939,6 @@ class _MapScreenState extends State<MapScreen> {
     );
   }
 
-  // 8. Tips Dialog UI
   Widget _buildTipsDialog() {
     return Container(
       color: Colors.black.withOpacity(0.8),
@@ -2076,7 +2025,6 @@ class _MapScreenState extends State<MapScreen> {
     );
   }
 
-  // 11. Level Up Overlay Dialog
   Widget _buildLevelUpDialog() {
     return Container(
       color: Colors.black.withOpacity(0.9),

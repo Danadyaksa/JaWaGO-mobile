@@ -13,12 +13,11 @@ class InventoryScreen extends StatefulWidget {
 
 class _InventoryScreenState extends State<InventoryScreen> {
   final InventoryController _controller = InventoryController();
-  String _activeTab = 'wayang'; // 'wayang' or 'landmark'
+  String _activeTab = 'wayang';
 
   Map<String, dynamic>? _selectedWayang;
   Map<String, dynamic>? _selectedLandmark;
 
-  // Delegates for Controller State Variables (to keep Build method unchanged)
   List<dynamic> get _myPokemons => _controller.myPokemons;
   List<dynamic> get _myLandmarks => _controller.myLandmarks;
   bool get _loading => _controller.loading;
@@ -83,7 +82,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF1F5F9), // bg-slate-100
+      backgroundColor: const Color(0xFFF1F5F9),
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0.5,
@@ -104,17 +103,15 @@ class _InventoryScreenState extends State<InventoryScreen> {
       ),
       body: Column(
         children: [
-          // Tab Toggle Header
           Container(
             color: Colors.white,
             padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
             child: Column(
               children: [
-                // Tabs
                 Container(
                   padding: const EdgeInsets.all(4.0),
                   decoration: BoxDecoration(
-                    color: const Color(0xFFF1F5F9), // slate-100
+                    color: const Color(0xFFF1F5F9),
                     borderRadius: BorderRadius.circular(14.0),
                   ),
                   child: Row(
@@ -176,7 +173,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
                                 fontSize: 13,
                                 fontWeight: FontWeight.bold,
                                 color: _activeTab == 'landmark'
-                                    ? const Color(0xFF1D4ED8) // blue-700
+                                    ? const Color(0xFF1D4ED8)
                                     : const Color(0xFF94A3B8),
                               ),
                             ),
@@ -188,7 +185,6 @@ class _InventoryScreenState extends State<InventoryScreen> {
                 ),
                 const SizedBox(height: 12),
 
-                // Sorting Filters
                 SizedBox(
                   height: 32,
                   child: _activeTab == 'wayang'
@@ -283,7 +279,6 @@ class _InventoryScreenState extends State<InventoryScreen> {
             ),
           ),
 
-          // Items Content
           Expanded(
             child: _loading
                 ? Center(
@@ -305,12 +300,10 @@ class _InventoryScreenState extends State<InventoryScreen> {
                   )
                 : Stack(
                     children: [
-                      // List View
                       _activeTab == 'wayang'
                           ? _buildWayangList()
                           : _buildLandmarkList(),
 
-                      // Floating dialog overlays
                       if (_selectedWayang != null)
                         Container(
                           color: Colors.black.withOpacity(0.6),
@@ -372,10 +365,10 @@ class _InventoryScreenState extends State<InventoryScreen> {
         final bool isRare = rarity == 'Rare';
 
         final borderColor = isLegend
-            ? const Color(0xFFD8B4FE) // border-purple-300
+            ? const Color(0xFFD8B4FE)
             : (isRare ? const Color(0xFF93C5FD) : const Color(0xFFE2E8F0));
         final bgColor = isLegend
-            ? const Color(0xFFF3E8FF) // bg-purple-50
+            ? const Color(0xFFF3E8FF)
             : (isRare ? const Color(0xFFEFF6FF) : Colors.white);
 
         final rarityTagBg = isLegend
@@ -405,7 +398,6 @@ class _InventoryScreenState extends State<InventoryScreen> {
             ),
             child: Row(
               children: [
-                // Image Box
                 Container(
                   width: 80,
                   height: 80,
@@ -461,7 +453,6 @@ class _InventoryScreenState extends State<InventoryScreen> {
                 ),
                 const SizedBox(width: 16),
 
-                // Details
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -559,7 +550,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: const Color(0xFFDBEAFE), width: 1.5), // border-blue-100
+              border: Border.all(color: const Color(0xFFDBEAFE), width: 1.5),
               boxShadow: [
                 BoxShadow(
                   color: Colors.black.withOpacity(0.02),
@@ -570,7 +561,6 @@ class _InventoryScreenState extends State<InventoryScreen> {
             ),
             child: Row(
               children: [
-                // Image Box
                 Container(
                   width: 80,
                   height: 80,
@@ -606,7 +596,6 @@ class _InventoryScreenState extends State<InventoryScreen> {
                 ),
                 const SizedBox(width: 16),
 
-                // Details
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -614,7 +603,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
                       Text(
                         name,
                         style: const TextStyle(
-                          color: Color(0xFF1E3A8A), // blue-900
+                          color: Color(0xFF1E3A8A),
                           fontWeight: FontWeight.w900,
                           fontSize: 14,
                         ),

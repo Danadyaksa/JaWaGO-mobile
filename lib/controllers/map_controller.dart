@@ -115,16 +115,13 @@ class MapScreenController {
       };
     }
 
-    // Insert to user storage
     await _client.from('user_storage').insert({
       'user_id': user.id,
       'pokedex_id': spawn['pokedex_id'],
     });
 
-    // Delete from active spawns
     await _client.from('active_spawns').delete().eq('id', spawn['id']);
 
-    // Add experience points
     final pokedex = spawn['pokedex'] ?? spawn;
     final int xpGained = (pokedex['xp_reward'] is num)
         ? (pokedex['xp_reward'] as num).toInt()
@@ -163,13 +160,11 @@ class MapScreenController {
       };
     }
 
-    // Insert to user landmarks
     await _client.from('user_landmarks').insert({
       'user_id': user.id,
       'landmark_id': landmark['id'],
     });
 
-    // Add experience points
     final int xpGained = (landmark['xp_reward'] is num)
         ? (landmark['xp_reward'] as num).toInt()
         : int.tryParse(landmark['xp_reward']?.toString() ?? '') ?? 500;
@@ -202,7 +197,7 @@ class MapScreenController {
     while (newXp >= nextLevelXp) {
       newXp -= nextLevelXp;
       currentLevel += 1;
-      nextLevelXp = (nextLevelXp * 1.5).round(); // Next level needs 50% more XP
+      nextLevelXp = (nextLevelXp * 1.5).round();
       levelUpTo = currentLevel;
     }
 
@@ -212,7 +207,6 @@ class MapScreenController {
       'next_level_xp': nextLevelXp,
     }).eq('id', user.id);
 
-    // Refresh profile in controller
     await fetchProfile();
 
     return levelUpTo;
@@ -231,7 +225,6 @@ class MapScreenController {
         if (data['routes'] != null && data['routes'].length > 0) {
           final rawRoutes = data['routes'] as List<dynamic>;
 
-          // Deduplicate routes based on distance
           final List<dynamic> uniqueRoutes = [];
           for (var r in rawRoutes) {
             bool exists = uniqueRoutes.any((ur) =>

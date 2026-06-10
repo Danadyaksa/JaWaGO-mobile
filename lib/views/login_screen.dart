@@ -88,10 +88,9 @@ class _LoginScreenState extends State<LoginScreen> {
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
-      backgroundColor: const Color(0xFF0F172A), // bg-slate-900
+      backgroundColor: const Color(0xFF0F172A),
       body: Stack(
         children: [
-          // Blur backgrounds (Glow effects)
           Positioned(
             top: -size.height * 0.1,
             left: -size.width * 0.2,
@@ -100,7 +99,7 @@ class _LoginScreenState extends State<LoginScreen> {
               height: 400,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: const Color(0xFF2563EB).withOpacity(0.15), // blue-600/15
+                color: const Color(0xFF2563EB).withOpacity(0.15),
               ),
             ),
           ),
@@ -112,19 +111,17 @@ class _LoginScreenState extends State<LoginScreen> {
               height: 400,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: const Color(0xFFD97706).withOpacity(0.08), // amber-600/8
+                color: const Color(0xFFD97706).withOpacity(0.08),
               ),
             ),
           ),
 
-          // Main content
           Center(
             child: SingleChildScrollView(
               padding: const EdgeInsets.all(24.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // Card
                   Container(
                     width: double.infinity,
                     constraints: const BoxConstraints(maxWidth: 380),
@@ -132,7 +129,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(40.0),
                       border: Border.all(
-                        color: const Color(0xFF1E293B), // border-slate-800
+                        color: const Color(0xFF1E293B),
                         width: 4.0,
                       ),
                       boxShadow: [
@@ -147,14 +144,13 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        // Header Banner
                         Container(
                           height: 176,
                           decoration: const BoxDecoration(
                             gradient: LinearGradient(
                               colors: [
-                                Color(0xFF2563EB), // blue-600
-                                Color(0xFF4338CA), // indigo-700
+                                Color(0xFF2563EB),
+                                Color(0xFF4338CA),
                               ],
                               begin: Alignment.topLeft,
                               end: Alignment.bottomRight,
@@ -163,11 +159,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           child: Stack(
                             alignment: Alignment.center,
                             children: [
-                              // Textures or lines could go here, or we keep it clean.
                               Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  // Circular logo
                                   Container(
                                     width: 76,
                                     height: 76,
@@ -190,7 +184,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     child: Image.asset(
                                       'assets/logo.png',
                                       fit: BoxFit.contain,
-                                      color: const Color(0xFF2563EB), // Tint to match next.js look
+                                      color: const Color(0xFF2563EB),
                                     ),
                                   ),
                                   const SizedBox(height: 8),
@@ -220,17 +214,15 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
 
-                        // Form content
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 28.0, vertical: 32.0),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
-                              // Email label & input
                               const Text(
                                 'EMAIL',
                                 style: TextStyle(
-                                  color: Color(0xFF94A3B8), // slate-400
+                                  color: Color(0xFF94A3B8),
                                   fontSize: 10,
                                   fontWeight: FontWeight.w800,
                                   letterSpacing: 1.5,
@@ -240,9 +232,9 @@ class _LoginScreenState extends State<LoginScreen> {
                               Container(
                                 height: 48,
                                 decoration: BoxDecoration(
-                                  color: const Color(0xFFF8FAFC), // slate-50
+                                  color: const Color(0xFFF8FAFC),
                                   borderRadius: BorderRadius.circular(16.0),
-                                  border: Border.all(color: const Color(0xFFE2E8F0)), // slate-200
+                                  border: Border.all(color: const Color(0xFFE2E8F0)),
                                 ),
                                 child: TextField(
                                   controller: _emailController,
@@ -265,11 +257,10 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                               const SizedBox(height: 20),
 
-                              // Password label & input
                               const Text(
                                 'PASSWORD',
                                 style: TextStyle(
-                                  color: Color(0xFF94A3B8), // slate-400
+                                  color: Color(0xFF94A3B8),
                                   fontSize: 10,
                                   fontWeight: FontWeight.w800,
                                   letterSpacing: 1.5,
@@ -279,9 +270,9 @@ class _LoginScreenState extends State<LoginScreen> {
                               Container(
                                 height: 48,
                                 decoration: BoxDecoration(
-                                  color: const Color(0xFFF8FAFC), // slate-50
+                                  color: const Color(0xFFF8FAFC),
                                   borderRadius: BorderRadius.circular(16.0),
-                                  border: Border.all(color: const Color(0xFFE2E8F0)), // slate-200
+                                  border: Border.all(color: const Color(0xFFE2E8F0)),
                                 ),
                                 child: TextField(
                                   controller: _passwordController,
@@ -304,7 +295,6 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                               const SizedBox(height: 24),
 
-                              // Submit Button
                               GestureDetector(
                                 onTap: _loading ? null : _handleAuth,
                                 child: Container(
@@ -312,8 +302,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                   decoration: BoxDecoration(
                                     gradient: const LinearGradient(
                                       colors: [
-                                        Color(0xFF2563EB), // blue-600
-                                        Color(0xFF4F46E5), // indigo-600
+                                        Color(0xFF2563EB),
+                                        Color(0xFF4F46E5),
                                       ],
                                     ),
                                     borderRadius: BorderRadius.circular(16.0),
@@ -348,10 +338,9 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
 
                               const SizedBox(height: 24),
-                              const Divider(color: Color(0xFFF1F5F9)), // slate-100
+                              const Divider(color: Color(0xFFF1F5F9)),
                               const SizedBox(height: 16),
 
-                              // Toggle auth state
                               Text(
                                 _isRegister ? 'Sudah punya akun?' : 'Belum jadi Trainer?',
                                 textAlign: TextAlign.center,
@@ -388,7 +377,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
                   const SizedBox(height: 32),
 
-                  // Footer credits
                   const Opacity(
                     opacity: 0.3,
                     child: Text(

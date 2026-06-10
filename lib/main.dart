@@ -8,7 +8,6 @@ import 'views/inventory_screen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialize Supabase with extracted configuration keys
   await Supabase.initialize(
     url: SupabaseConfig.url,
     anonKey: SupabaseConfig.anonKey,
@@ -22,7 +21,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Check for active login session
     final session = Supabase.instance.client.auth.currentSession;
 
     return MaterialApp(
@@ -30,10 +28,10 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF2563EB), // blue-600
+          seedColor: const Color(0xFF2563EB),
         ),
         useMaterial3: true,
-        fontFamily: 'Roboto', // Premium layout typography
+        fontFamily: 'Roboto',
       ),
       home: session != null ? const MapScreen() : const LoginScreen(),
       routes: {
